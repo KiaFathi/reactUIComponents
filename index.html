@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ReactUIComponents</title>
+  <script src='bower_components/react/JSXTransformer.js'></script>
+  <script src='bower_components/react/react.js'></script>
+</head>
+<body>
+
+  <script type='text/jsx'>
+  /** @jsx React.DOM */
+    //This is how you create a custom component
+    var Timer = React.createClass({
+      //getInitialState is called before render function, assigns an object to this.state
+      getInitialState: function(){
+        //this.state will be set to this object.
+        return {elapsed: 0}
+      },
+
+      //componentDidMount is called when an object is rendered. Kinda like document.ready in jquery
+      componentDidMount: function(){
+        this.timer = setInterval(this.tick, 50);
+      },
+
+      //componentWillUnmount is called when the component is destroyed. We use it to clear the interval
+      componentWillUnmount: function(){
+        clearInterval(this.timer);
+      },
+
+      tick: function(){
+        this.setState({elapsed: new Date() - this.props.start}); 
+      },
+
+      render: function(){
+        var elapsed = Math.round(this.state.elapsed/100);
+
+        var seconds = (elapsed/10).toFixed(1);
+
+        return <p>This example was started <b>{seconds} seconds</b> ago.</p>;
+      }
+    })
+
+    React.renderComponent(<Timer start={Date.now()}/>, document.body);
+  </script>
+
+</body>
+</html>
